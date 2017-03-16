@@ -2,7 +2,7 @@
 
 int main()
 {
-    int i,pom,suma=0,przeciecie=0;
+    unsigned int i,pom,suma=0,przeciecie=0;
     unsigned int zbior1=0,zbior2=0;
 
     scanf("%u", &pom);
