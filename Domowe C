@@ -1,0 +1,37 @@
+#include <stdio.h>
+
+int main()
+{
+    int i,pom,suma=0,przeciecie=0;
+    unsigned int zbior1=0,zbior2=0;
+
+    scanf("%u", &pom);
+    while(pom!=-1){
+        zbior1 |= 1<<pom;
+        scanf("%u", &pom);
+    }
+
+    scanf("%u", &pom);
+    while(pom!=-1){
+        zbior2 |= 1<<pom;
+        scanf("%u", &pom);
+    }
+
+    przeciecie = zbior1 & zbior2;
+    suma = zbior1 | zbior2;
+
+    printf("\nsuma: ");
+    for(i=0;i<=31;i++){
+        if(((suma>>i)%2)==1){
+            printf("%u ", i);
+        }
+    }
+    printf("\nprzeciecie: ");
+    for(i=0;i<=31;i++){
+        if(((przeciecie>>i)%2)==1){
+            printf("%u ", i);
+        }
+    }
+
+    return 0;
+}
