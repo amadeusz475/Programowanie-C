@@ -54,7 +54,7 @@ int main()
     while(znak!=EOF){
         scanf("%c", &znak);
         if(znak>47 && znak<58){
-            tab[znak-49]++;
+            tab[znak-48]++;
         }
     }
     for(i=0;i<10;i++){
