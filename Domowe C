@@ -88,3 +88,34 @@ int main()
 
     return 0;
 }
+
+//Domowe 07.04.2017
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+    int liczba_zestawow,ile_elementow,suma=0,i,j,pom_sum=0;
+    double srednia=0,pom_sr=0;
+    int *zestawy;
+    scanf("%d", &liczba_zestawow);
+
+    for(i=0;i<liczba_zestawow;i++){
+        scanf("%d", &ile_elementow);
+        zestawy = malloc(sizeof(int)*ile_elementow);
+        for(j=0;j<ile_elementow;j++){
+            scanf("%d" , &zestawy[j]);
+            pom_sum+=zestawy[j];
+        }
+        suma+=pom_sum;
+        pom_sr=(double)pom_sum/(double)ile_elementow;
+        if(pom_sr>srednia) srednia=pom_sr;
+        pom_sum=0;
+        pom_sr=0;
+        free(zestawy);
+    }
+    printf("SUMA: %d\nSREDNIA: %f", suma,srednia );
+
+    return 0;
+}
