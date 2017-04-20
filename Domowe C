@@ -119,3 +119,64 @@ int main()
 
     return 0;
 }
+
+//Domowe 21.04.2017
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+typedef struct wezel{
+        int klucz;
+        struct wezel *nastepny;
+        }wezel;
+
+void pushowanie( wezel **stos, int wartosc)
+{
+    wezel *nowy;
+    nowy = (wezel*)malloc(sizeof(wezel));
+    nowy->klucz=wartosc;
+    nowy->nastepny=NULL;
+    if((*stos)==NULL){
+        (*stos)=nowy;
+    }else{
+        nowy->nastepny=(*stos);
+        (*stos)=nowy;
+    }
+}
+
+void popowanie (wezel **stos)
+{
+    wezel *pom;
+    if((*stos)==NULL){
+        printf("Stos jest pusty!\n");
+    }else{
+        pom=(*stos);
+        printf("%d\n", pom->klucz);
+        (*stos)=pom->nastepny;
+        free(pom);
+    }
+
+}
+
+int main()
+{
+    char polecenie[5];
+    wezel *stosik = NULL;
+    int a;
+    while(strcmp(polecenie,"quit")!=0){
+        scanf("%s", polecenie);
+
+        if(strcmp(polecenie,"push")==0){
+            scanf("%d", &a);
+            pushowanie(&stosik,a);
+        }else if(strcmp(polecenie,"pop")==0){
+            popowanie(&stosik);
+        }else if(strcmp(polecenie,"quit")==0){
+            printf("Bye Bye!\n");
+        }else{
+            printf("Nieznane Polecenie!\n");
+        }
+    }
+
+    return 0;
+}
