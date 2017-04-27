@@ -180,3 +180,159 @@ int main()
 
     return 0;
 }
+
+//Domowe 28.05.2017
+
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef struct wezel{
+    int klucz;
+    struct wezel *nastepny;
+    struct wezel *poprzedni;
+}wezel;
+
+typedef struct lista{
+    wezel* pierwszy;
+    wezel* ostatni;
+}lista;
+
+void dodaj(lista **L, int wartosc)
+{
+    wezel *nowy = malloc(sizeof(wezel));
+
+    if((*L)==NULL){
+        lista *listusia = malloc(sizeof(lista));
+        (*L)=listusia;
+        nowy->klucz = wartosc;
+        nowy->nastepny = NULL;
+        nowy->poprzedni = NULL;
+        (*L)->pierwszy = nowy;
+        (*L)->ostatni = nowy;
+    }else{
+        nowy->klucz = wartosc;
+        nowy->poprzedni = ((*L)->ostatni);
+        nowy->nastepny = NULL;
+        (*L)->ostatni->nastepny = nowy;
+        (*L)->ostatni = nowy;
+    }
+}
+
+void wypisz(const lista* List)
+{
+    if(List==NULL){
+        printf("Lista jest Pusta");
+    }
+    else{
+    wezel *pom;
+    pom = List->pierwszy;
+    while(pom!=NULL){
+        printf("%d ", pom->klucz);
+        pom = (pom->nastepny);
+    }
+
+    free(pom);
+    }
+    printf("\n");
+}
+
+void usun(lista **L, int wartosc)
+{
+    int ile=0;
+    if((*L)==NULL){
+        printf("Lista jest pusta!\n");
+    }else{
+        wezel *pom;
+        pom = (*L)->pierwszy;
+        while(pom!=NULL){
+            if(pom->klucz==wartosc){
+                wezel *zastepca;
+                if(pom->poprzedni==NULL){
+                    (*L)->pierwszy = pom->nastepny;
+                    pom->nastepny->poprzedni = NULL;
+                    zastepca = pom->nastepny;
+                    free(pom);
+                    pom = zastepca;
+                }
+                else if(pom->nastepny==NULL){
+                    (*L)->ostatni = pom->poprzedni;
+                    pom->poprzedni->nastepny = NULL;
+                    zastepca = pom->poprzedni->nastepny;
+                    free(pom);
+                    pom = zastepca;
+
+                }else{
+                    zastepca = pom->nastepny;
+                    zastepca->poprzedni = pom->poprzedni;
+                    zastepca = pom->poprzedni;
+                    zastepca->nastepny = pom->nastepny;
+                    zastepca = pom->nastepny;
+                    free(pom);
+                    pom = zastepca;
+                }
+                ile++;
+            }else pom = pom->nastepny;
+
+        }
+        if(ile==0) printf("Nie bylo tego elementu na liscie!\n");
+        else printf("Usunieto %d elementow o wartosci %d\n",ile,wartosc);
+    }
+
+}
+
+int size(lista *Lista)
+{
+    wezel * pom = Lista->pierwszy;
+    int i=0;
+    while(pom!=NULL){
+        pom = pom ->nastepny;
+        i++;
+    }
+
+    return i;
+}
+
+lista* reversed(lista *Oryginal)
+{
+    wezel *pom;
+    lista *revers = malloc(sizeof(lista));
+    pom = Oryginal->ostatni;
+    revers->pierwszy = pom;
+    revers->ostatni = pom;
+    revers->ostatni->poprzedni = revers->pierwszy;
+    revers->ostatni->nastepny = NULL;
+    revers->pierwszy->nastepny = revers->ostatni;
+    revers->pierwszy->poprzedni = NULL;
+
+    while(pom!=NULL){
+        pom = (pom->poprzedni);
+        wezel *nowy = malloc(sizeof(wezel));
+        nowy->klucz = pom->klucz;
+        nowy->nastepny = pom->poprzedni;
+        nowy->poprzedni = pom->nastepny;
+
+        revers->pierwszy = nowy;
+    }
+    return revers;
+}
+int main()
+{
+    lista *list=NULL;
+    int a=1;
+    printf("Podaj elementy listy: ");
+    while(scanf("%d",&a)!=EOF){
+        if(a!=0)dodaj(&list,a);
+    }
+    printf("Oto twoja lista: . Jej rozmiar to: %d.\n", size(list));
+    wypisz(list);
+    printf("Co chcesz z niej usunac: ");
+    scanf("%d", &a);
+    usun(&list,a);
+    printf("Oto twoja lista: . Jej rozmiar to: %d.\n", size(list));
+    wypisz(list);
+    printf("rewers:\n");
+    lista *revers = reversed(list);
+    wypisz(revers);
+
+    return 0;
+}
